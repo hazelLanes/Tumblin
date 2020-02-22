@@ -1,19 +1,75 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
+[ext_resource path="res://assets/textures/dirt.png" type="Texture" id=1]
 [ext_resource path="res://Fade.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Ground.tscn" type="PackedScene" id=4]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
+export (int) var DEPTH
+export (int) var DIFFICULTY
+export (int) var ROUGHNESS
+
+const STEP_SIZE = 64
+
 func _ready():
 	$Fade.fade_in()
+	
+	var noise = preload(\"res://softnoise.gd\").SoftNoise.new()
+	
+	var pointsleft = PoolVector2Array()
+	pointsleft.append(Vector2(0,0))
+	for n in range(1, DEPTH):
+		pointsleft.append(Vector2((noise.openSimplex2D(-1000,n)+1)*ROUGHNESS,n * STEP_SIZE))
+	pointsleft.append(Vector2(0,STEP_SIZE*DEPTH))
+	$Ground/Left.vertices = pointsleft
+	
+	var pointsright = PoolVector2Array()
+	pointsright.append(Vector2(0,0))
+	for n in range(1, DEPTH):
+		pointsright.append(Vector2((noise.openSimplex2D(1000,n)-1)*ROUGHNESS,n * STEP_SIZE))
+	pointsright.append(Vector2(0,STEP_SIZE*DEPTH))
+	$Ground/Right.vertices = pointsright
 "
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends RigidBody2D
+
+func hurt(damage):
+	queue_free()
+"
+
+[sub_resource type="CircleShape2D" id=3]
 
 [node name="Gameplay" type="Node2D"]
 script = SubResource( 1 )
-
-[node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 121.149, 16.4269 )
+DEPTH = 50
+ROUGHNESS = 40
 
 [node name="Fade" parent="." instance=ExtResource( 2 )]
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+position = Vector2( 86.7547, -18.4803 )
+collision_layer = 4
+collision_mask = 7
+mass = 0.02
+script = SubResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource( 3 )
+
+[node name="Ground" type="Node2D" parent="."]
+
+[node name="Left" parent="Ground" instance=ExtResource( 4 )]
+position = Vector2( -80, 0 )
+TEXTURE = ExtResource( 1 )
+OUTLINE_SIZE = 4
+
+[node name="Right" parent="Ground" instance=ExtResource( 4 )]
+position = Vector2( 80, 0 )
+TEXTURE = ExtResource( 1 )
+OUTLINE_SIZE = 4

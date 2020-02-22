@@ -15,7 +15,6 @@ func _ready():
 
 const GameplayScene = preload(\"res://Gameplay.tscn\")
 func _on_Fade_faded_out():
-	print(\"HELP ME\")
 	get_tree().change_scene(\"res://Gameplay.tscn\")
 "
 
@@ -47,16 +46,16 @@ __meta__ = {
 }
 
 [node name="MenuButtons" type="VBoxContainer" parent="HBoxContainer"]
-margin_right = 118.0
-margin_bottom = 160.0
+margin_right = 78.0
+margin_bottom = 240.0
 size_flags_horizontal = 3
 alignment = 1
 
 [node name="PlayButton" type="TextureButton" parent="HBoxContainer/MenuButtons"]
-margin_left = 35.0
-margin_top = 17.0
-margin_right = 83.0
-margin_bottom = 33.0
+margin_left = 15.0
+margin_top = 30.0
+margin_right = 63.0
+margin_bottom = 46.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
 texture_normal = SubResource( 2 )
@@ -64,26 +63,26 @@ texture_pressed = SubResource( 3 )
 texture_hover = SubResource( 4 )
 
 [node name="HowtoButton" type="TextureButton" parent="HBoxContainer/MenuButtons"]
-margin_left = 59.0
-margin_top = 79.0
-margin_right = 59.0
-margin_bottom = 79.0
+margin_left = 39.0
+margin_top = 119.0
+margin_right = 39.0
+margin_bottom = 119.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
 
 [node name="CreditsButton" type="TextureButton" parent="HBoxContainer/MenuButtons"]
-margin_left = 59.0
-margin_top = 134.0
-margin_right = 59.0
-margin_bottom = 134.0
+margin_left = 39.0
+margin_top = 201.0
+margin_right = 39.0
+margin_bottom = 201.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
 
 [node name="Logo" type="TextureRect" parent="HBoxContainer"]
-margin_left = 149.0
-margin_top = 48.0
-margin_right = 213.0
-margin_bottom = 112.0
+margin_left = 89.0
+margin_top = 88.0
+margin_right = 153.0
+margin_bottom = 152.0
 size_flags_horizontal = 6
 size_flags_vertical = 4
 texture = ExtResource( 1 )
